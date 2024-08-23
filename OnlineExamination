@@ -1,0 +1,119 @@
+import java.util.*; 
+public class OnlineExamination 
+{  
+    private static String username = "user";  
+    private static String password = "pass";  
+    private static boolean loggedIn = false;  
+    private static int timeLimit = 30;   
+    public static void main(String[] args) 
+    {  
+        Scanner scanner = new Scanner(System.in);  
+        while (true) 
+        {  
+            System.out.println("Welcome to the Online Examination System");  
+            System.out.println("1. Login");  
+            System.out.println("2. Exit");  
+            System.out.print("Choose an option: ");  
+            int choice = scanner.nextInt();  
+            scanner.nextLine(); 
+            if (choice == 1) 
+            {  
+                if (login(scanner)) 
+                {  
+                    postLoginMenu(scanner);  
+                }  
+            } 
+            else 
+            {  
+                System.out.println("Exiting!");  
+                break;  
+            }  
+        }  
+        scanner.close();  
+    }  
+    private static boolean login(Scanner scanner) 
+    {  
+        System.out.print("Enter username: ");  
+        String enteredUsername = scanner.nextLine();  
+        System.out.print("Enter password: ");  
+        String enteredPassword = scanner.nextLine();  
+        if (enteredUsername.equals(username) && enteredPassword.equals(password)) 
+        {  
+            loggedIn = true;  
+            System.out.println("Login successful!");  
+            return true;  
+        } 
+        else 
+        {  
+            System.out.println("Invalid username or password.");  
+            return false;  
+        }  
+    }  
+    private static void postLoginMenu(Scanner scanner) 
+    {  
+        while (true) 
+        {  
+            System.out.println("1. Start Exam");  
+            System.out.println("2. Update Profile and Password");  
+            System.out.println("3. Logout");  
+            System.out.print("Select an option: ");  
+            int choice = scanner.nextInt();  
+            scanner.nextLine(); 
+            switch (choice)
+            {  
+                case 1:  
+                    startExam(scanner);  
+                    break;  
+                case 2:  
+                    updateProfileAndPassword(scanner);  
+                    break;  
+                case 3:  
+                    System.out.println("Logging out...");  
+                    loggedIn = false;  
+                    return;
+                default:  
+                    System.out.println("Invalid option. Please try again.");  
+            }  
+        }  
+    }  
+    private static void startExam(Scanner scanner) 
+    {  
+        System.out.println("Starting the exam...");  
+        Timer timer = new Timer();  
+        timer.schedule(new TimerTask() 
+        {  
+            @Override  
+            public void run() 
+            {  
+                System.out.println("\nTime's up! Submitting your exam!");  
+                submitExam();  
+            }  
+        }, timeLimit * 1000);   
+        String[] questions = {   
+            "1. What is the capital of India?\nA. New Delhi\nB. Delhi\nC. Bombay\nD. Chennai",  
+            "2. Who is the Prime Minister of India?\nA. Narendra Modi\nB. Amit Shah\nC. Rajnath Singh\nD. Chirag Pawan"   
+        };  
+        String[] answers = new String[questions.length];  
+        for (int i = 0; i < questions.length; i++) 
+        {  
+            System.out.println(questions[i]);  
+            System.out.print("Select an answer (A/B/C/D): ");  
+            answers[i] = scanner.nextLine();  
+        }  
+        timer.cancel(); 
+        submitExam();  
+    }  
+    private static void submitExam() 
+    {  
+        System.out.println("Exam submitted. Thank you for participating!");  
+        loggedIn = false;  
+    }  
+    private static void updateProfileAndPassword(Scanner scanner) 
+    {  
+        System.out.print("Enter new username: ");  
+        username = scanner.nextLine();  
+        System.out.print("Enter new password: ");  
+        password = scanner.nextLine();  
+        System.out.println("Profile updated successfully.");  
+    }  
+}
